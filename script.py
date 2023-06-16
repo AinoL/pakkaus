@@ -1,7 +1,5 @@
 from enum import Enum
-from aenum import MultiValueEnum
 import math
-
 
 final_set = {}
 multiplier_dict = {
@@ -13,7 +11,7 @@ multiplier_dict = {
     "housut": 0.3
 }
 
-class Destination(MultiValueEnum):
+class Destination(Enum):
     city = 1
     climbing = 2
     camping = 3
@@ -25,14 +23,20 @@ def gear(i):
     return list(map(lambda x: x.replace("\n", ""), lines))
 
 def multipliers(nights, final_set):
-    multiplier_gear = []
     for g in final_set:
         if g in multiplier_dict:
-            print(g + ' * ' + str(math.ceil(multiplier_dict[g] * nights)))
+            final_set.add(g + ' * ' + str(math.ceil(multiplier_dict[g] * nights)))
+            final_set.remove(g)
+    return final_set
+
+def concatlist():
+    for d in Destination:
+        print('{:15} = {}'.format(d.name, d.value))
+    
 
 def main():
-    destination_input = input ('Where are you going? \n 1 = city \n 2 = climbing \n 3 = camping \n 4 = kayaking \n Give list as numbers like \'13\': ')
-    night_input = input ('How many nights?: ')
+    concatlist()
+    destination_input = input ('Where are you going? Give list as numbers like \'13\': ')
     try:
         final_gear = []
         val = int(destination_input)
@@ -41,13 +45,14 @@ def main():
         final_set = set(final_gear)
     except ValueError:
         print("That's not an number!")
+
+    night_input = input ('How many nights?: ')
     try:
         val = int(night_input)
-        multipliers(val, final_set)
+        final_set = multipliers(val, final_set)
+        print(list(final_set))
     except ValueError:
         print("That's not an number!")
-
-        
 
 if __name__ == "__main__":
     main()
