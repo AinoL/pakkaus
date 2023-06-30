@@ -16,6 +16,7 @@ class Destination(Enum):
     climbing = 2
     camping = 3
     kayaking = 4
+    cabin = 5
 
 def gear(i):
     with open("lists/" + Destination(int(i)).name + ".txt") as f:
